@@ -1,0 +1,247 @@
+数据分析
+
+####1
+探索型 - 图表可视化
+验症型 - 假设检验
+预测性 - 机器学习
+
+
+探索性数据分析：
+条形图/直方图
+饼图
+折线图/散点图
+箱形图
+
+条形图-
+seaborn.barplot(x="day",y="total_bill",dataa=tips)
+直方图-
+seaborn.distplot(x) #x 是一个list
+饼图- seaborn未提供饼图功能
+折线图-
+seaborn.pointplot(x="day",y="tip",data=tips,ci=68) #ci控制error bar
+散点图-
+seaborn.regplot(x="total_bill",y="tip",data=tips)
+箱型图-
+seaborn.boxplot(x="day",y="total_bill",dataa=tips)
+
+其他工具：
+网络数据 - Gephi - 处理节点和边的关系（facebook上用户和好友关系）
+时空数据 - MapBox/Carto - 地图
+
+####2 探索型数据分析
+iris_explorer_plot.py
+
+####3
+总体：研究对象的全体
+样本：从总体中“随机”抽样
+采样偏差：在抽样过程中没有达到足够随机
+Error Bar:
+   1.标准差（针对个体）
+   seaborn.barplot(...,ci='sd')
+   2.Bootstrap置信区间（针对总体）
+   seaborn.barplot(...,ci=90,n_boot=1000) #n_boot重复采样次数
+####4 验证型数据分析
+   随机变量 - 值随机而变的
+     - 离散型随机变量 （比如抛硬币）
+     - 连续随机变量 （比如跳远的距离）
+  *假设检验：由样本去推断总体。
+    - 零假设：希望推翻的结论
+    - 备择假设 ： 希望证明的结论
+    - 显著 <5% == 承认备择假设
+  *Z检验
+  *T检验
+####5验证性数据分析
+    P-value:零假设成立时，出现的概率。
+    z检验：
+    canda install statsmodels
+    z,pval = statsmodels.stats.weightstats.ztest(X,value=175)#X包含身高的list
+    比较pval和0.5
+    t检验：student t
+    canda install scipy
+    t,pval = scipy.stats.ttest_1samp(X,popmean=175)#同上
+    双样本检验:
+    t,pval = scipy.stats.ttest_ind(X1,X2)#复旦大学和上海大学平均身高一样
+    实例：Iris_suppose_check.py
+####6预测性数据分析：回归和分类
+    - 回归 ： 预测一个数值型的数据的趋势（比如：股票）
+      *线性回归
+      y = a0+a1*x1+a2*x2+...+an*xn
+      x=(x1,x2,...),a=(a1,a2,...),y=a0+ax^t
+      求a0,a1,a2...
+      监督学习
+      OLS： ordinary least squares
+    - 分类 ： 预测一个东西属于哪个类别 （比如：分析是否为垃圾邮件）
+    - 聚类 ： 没有明确需要预测的东西
+####7线性回归-scikit-learn
+    *线性回归
+    from sklearn import linear_model
+    lm = linear_model.liearRegression()
+    model = lm.fix[(x,y)
+
+    交叉检验：将样本分为训练集和测试集。针对测试集进行交叉检验
+    from sklearn.model_selection import cross_val_score
+    cross_val_score(lm,X,y,cv=5,scoring='neg_mean_absolute_error')
+    #scoring：验证误差的函数
+     - neg_mean_absolute_error
+     - neg_mean_squared_error
+    #cv 交叉检验的次数
+    #scoring：打分函数，分数越高，性能越好。上述negxxx需要取负值
+
+####8分类及逻辑回归
+    分类：对离散型变量进行预测（二分类，多分类）
+
+    回归：y是连续型变量  
+    分类：y是离散型变量
+    
+    分类问题得解决方法：
+    logistic回归，也叫二分类
+
+    from sklearn import linear_model
+    lm = linear_model.LogisticRegression()
+    model = lm.fix[(x,y)
+
+    cross_val_score(lm,X,y,cv-5,scoring='accuracy')
+    对于分类问题，使用accuracy。意思是对于x属于类别1如果分到了类别1就是正确的。
+    对于分类问题,不适用neg_mean_absolute_error and neg_mean_squared_error
+
+    实例：iris_predict_category.py
+
+####9回归和分类的其他模型
+     - k近邻
+         - k近邻回归 ： 计算平均值
+         - k近邻分类 ： 少数服从多数
+
+     from sklearn import neighbors
+     knn = neighbors.KNeighborsClassifier(5,weights='uniform') #分类
+     knn = neighbors.KneightRegressor(5,weights='uniform') #回归
+     knn.fix(X,y)
+     weights:uniform or distance
+
+     - 决策树
+     from sklearn import tree
+     dt = tree.DecisionTreeClassifier()
+     dt = tree.DecisionTreeRegressor()
+     dt.fix(X,y)
+
+     - 随机森林
+     ensemble learning :集成学习 } 少数服从多数
+
+     from sklearn import ensemble
+     rf = ensemble.RandomForestClassifier(10) #设定随机森林中有多少决策树
+     rf = ensemble.RandomForestRegressor(10)
+     rf.fix(X,y)
+
+     《机器学习》 南京大学 西瓜书
+
+####10 聚类
+    和回归，分类不同，聚类问题没有y.(比如顾客细分，文章聚类)
+
+    - 分类： 事先已知存在哪些类别
+    - 聚类： 事先不知存在哪些类别
+
+     聚类经典方法: K-means
+     k=2 2就代表任意两个点，采用迭代的方式去求里这两个点的距离
+     怎样确定最佳的K？ SSE公式，求拐点。
+
+     from sklearn.cluster import KMeans
+     km = KMeans(4)
+     km.fit(X)
+    
+     解决非圆形的数据分布问题。- DBSCAN
+     三类点:CORE；REACHABLE；OUTLIER
+     ：距离eps内包含min_samples个点
+     from sklearn.cluster import DBSCAN
+     km = DBSCAN(eps=0.3, min_samples=10)
+     km.fit(X)
+     km.labels_
+
+     对参数很敏感！！！需要调试很长时间。
+
+     回归 分类：监督学习    "X" "Y" 交差检验
+     聚类     ：无监督学习  “X”
+
+####11 特征选择一
+ 特征选择的方法：
+    1.数据驱动
+       1）相关性 - 皮尔逊系数
+       from scipy.stats.stats import pearsonr
+       pearsonr(x,y)
+       2）迭代删除/增加 - 暴力解法；复杂度2^N 所以采用迭代。
+       3）基于模型 - 
+    2.领域专家
+
+
+####12 特征选择二
+      随机森林
+
+
+####13
+      %matplotlib notebook
+
+      -离散型变量适合用boxplot来画图。
+      -连续型变量适合用regplot来画图。
+      
+      #seaborn的热力图
+      sns.heatmap
+
+      目标属性。其他相关属性。 -- 利用热力图找跟目标相关的属性。
+      **不同的属性对不同模型的影响是不一样的，
+      **有些属性会减少某些模型的误差
+      **有些属性会增加某些魔性的误差
+ 
+ ####14 rapidminer
+      account: juhao666@outlook.com
+
+ ####15 机器学习 
+       # 监督学习：回归，分类
+       # 非监督学习：聚类
+
+       - 集成学习
+       - 深度学习 - 深度神经网络 
+          - 卷积神经网络-图像处理
+          - 循环神经网络 - 时间序列，自然语言
+          工具包：
+          TensorFlow
+          Pytorch
+       - 强化学习 根据当前的状态进行决策
+          - 估值网络
+          - 决策网络
+       - 迁移学习
+          会骑自行车 -> 会骑摩托车
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

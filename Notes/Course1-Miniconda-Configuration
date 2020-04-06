@@ -1,0 +1,33 @@
+Operation:
+
+安装完miniconda后 
+需要配置path
+
+然后配置mirror
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+conda config --set show_channel_urls yes
+
+然后配置python环境
+conda create -n course_py35 python=3.5
+启动course_py35
+activate course_py35
+
+安装package
+conda install scipy
+conda install pandas
+pip install scikit-learn
+pip install beautifulsoup4   
+#注意：
+#需要在C:\Windows\System32>pip install beautifulsoup4下执行pip
+#不需要进入course_py35执行pip
+
+conda install jupyter
+启动jupyter
+jupyter notebook
+
+(course_py35) E:\Python\DataAnlysis\Trunk\Crawler>jupyter notebook --generate-config
+Writing default config to: C:\Users\Administrator\.jupyter\jupyter_notebook_config.py
+
+
+start jupyter 
+E:\Python\DataAnlysis\Trunk\Crawler>jupyter notebook

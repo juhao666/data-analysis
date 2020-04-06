@@ -1,0 +1,22 @@
+Course7-MongoDB
+
+
+
+MongoDB:
+PyMongo
+GUI: Robo 3T
+
+
+
+设置PATH:C:\Program Files\mongodb-win32-i386-3.2.18\bin
+
+mongod --dbpath="C:\Program Files\mongodb-win32-i386-3.2.18\data" --storageEngine=mmapv1
+
+
+default port 27017
+连接mongodb
+mongo --host=127.0.0.1 --port=27017
+
+show dbs;
+use test
+show collections; --查看表tables

@@ -1,0 +1,13 @@
+from sklearn import linear_model
+lm=linear_model.LinearRegression()
+features=['PetalLengthCm']
+X=iris[features]
+y=iris['PetalWidthCm']
+print(X.shape,y.shape)
+
+#放入两个特征,X就会多一个维度
+features=['PetalLengthCm','SepalLengthCm']
+#使用X，y来训练model
+model=lm.fit(X,y)
+	
+#从print的结果可以得到回归模型的截距和系数

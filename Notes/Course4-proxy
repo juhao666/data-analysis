@@ -1,0 +1,19 @@
+Course4-proxy
+import time
+time.sleep(5) #sleep 5 seconds
+
+
+import urllib.request as urlrequest
+proxy = urlrequest.ProxyHandler({'https':'47.91.78.201:3128'})
+#construct a new opener using your proxy settings
+
+opener = urlrequest.build_opener(proxy)
+
+opener.addheaders = [('User-Agent','...')]
+
+#####参考资料########
+www.sslproxies.org
+31f.cn
+pulse.media.mit.edu/data/
+
+
